@@ -9,6 +9,8 @@
 
 > This tool provides a security assessment based on available evidence. It does not guarantee that an AI agent is secure or constitute a formal security certification. It is not affiliated with or certified by OWASP, NIST, MITRE or the MCP project.
 
+📘 **User manual (PDF):** [English](docs/User-manual.pdf) · [Español](docs/Manual-de-usuario.pdf)
+
 **Quick install (skills.sh):** `npx skills add titoparra4/intelligent-agent-security-auditor` · **CLI:** `pip install -e .` → `agent-security-auditor audit ./my-agent`
 
 ---
