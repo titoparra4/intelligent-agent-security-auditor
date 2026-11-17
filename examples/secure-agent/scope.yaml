@@ -1,0 +1,11 @@
+# Authorization & scope for CONTROLLED DYNAMIC tests of the secure reference agent (synthetic only).
+authorized_by: "agent-owner (synthetic example)"
+target: enterprise-assistant-secure
+environment: sandbox
+synthetic_data_only: true
+expires: "2027-12-31"
+scenarios: all
+limits:
+  timeout_seconds: 20
+  memory_mb: 512
+  max_tool_calls: 50

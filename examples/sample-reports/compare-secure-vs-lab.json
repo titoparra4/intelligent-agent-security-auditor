@@ -1,0 +1,386 @@
+{
+  "baseline": "ASSESSMENT-SECURE-EXAMPLE",
+  "current": "ASSESSMENT-EXAMPLE",
+  "readiness": {
+    "before": "READY",
+    "after": "NOT_READY"
+  },
+  "score": {
+    "before": 95,
+    "after": 0,
+    "coverage_before": 78.8,
+    "coverage_after": 72.7
+  },
+  "new_tools": [],
+  "removed_tools": [],
+  "new_permissions": [
+    {
+      "tool": "drive_search",
+      "added": [
+        "https://www.googleapis.com/auth/drive"
+      ]
+    },
+    {
+      "tool": "crm_lookup",
+      "added": [
+        "crm.customers:read-all-tenants"
+      ]
+    }
+  ],
+  "new_mcp_servers": [
+    "filesystem"
+  ],
+  "new_network_destinations": [
+    "metrics-collector.lab.invalid"
+  ],
+  "new_data_access": [],
+  "new_dependencies": [
+    "pypi:google-api-python-client"
+  ],
+  "new_agents": [
+    "enterprise-assistant-demo"
+  ],
+  "introduced_findings": [
+    {
+      "finding_id": "ASA-1C39601C4C3E",
+      "rule_id": "DATA-005",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "Cross-user / cross-tenant data access not isolated",
+      "asset": "tool:crm_lookup"
+    },
+    {
+      "finding_id": "ASA-3D1C94720281",
+      "rule_id": "EXF-001",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "Unrestricted external destination",
+      "asset": "destination:metrics-collector.lab.invalid"
+    },
+    {
+      "finding_id": "ASA-02A26B939819",
+      "rule_id": "PERM-001",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "Excessive data permissions",
+      "asset": "tool:drive_search"
+    },
+    {
+      "finding_id": "ASA-6772730BA94E",
+      "rule_id": "MCP-008",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "MCP server with filesystem or network scope beyond the task",
+      "asset": "mcp:filesystem"
+    },
+    {
+      "finding_id": "ASA-28116C280DA2",
+      "rule_id": "MEM-001",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "Persistent memory not isolated per user/tenant",
+      "asset": "memory:assistant-long-term-memory"
+    },
+    {
+      "finding_id": "ASA-F43D1C7DF6E4",
+      "rule_id": "AUTO-001",
+      "severity": "HIGH",
+      "status": "CONFIRMED",
+      "title": "Irreversible or destructive action without human approval",
+      "asset": "tool:send_usage_report"
+    },
+    {
+      "finding_id": "ASA-2F20283B0B1C",
+      "rule_id": "ARCH-001",
+      "severity": "HIGH",
+      "status": "POTENTIAL",
+      "title": "Lethal combination: private data + untrusted content + external communication",
+      "asset": "agent:enterprise-assistant-demo"
+    },
+    {
+      "finding_id": "ASA-7001EAB33851",
+      "rule_id": "DATA-003",
+      "severity": "HIGH",
+      "status": "POTENTIAL",
+      "title": "Sensitive data can flow to an egress sink without control",
+      "asset": "tool:send_usage_report"
+    },
+    {
+      "finding_id": "ASA-FC3242762AA6",
+      "rule_id": "DATA-005",
+      "severity": "HIGH",
+      "status": "POTENTIAL",
+      "title": "Cross-user / cross-tenant data access not isolated",
+      "asset": "tool:lookup_customer"
+    },
+    {
+      "finding_id": "ASA-A985D559A1BF",
+      "rule_id": "EXF-003",
+      "severity": "HIGH",
+      "status": "POTENTIAL",
+      "title": "Sensitive local collection capability",
+      "asset": "file:sandbox_harness.py"
+    },
+    {
+      "finding_id": "ASA-5C27999A8936",
+      "rule_id": "MCP-005",
+      "severity": "HIGH",
+      "status": "POTENTIAL",
+      "title": "Tool poisoning indicators in MCP tool description",
+      "asset": "mcp-tool:crm-lab/lookup_customer"
+    },
+    {
+      "finding_id": "ASA-29005A089C25",
+      "rule_id": "MCP-001",
+      "severity": "MEDIUM",
+      "status": "CONFIRMED",
+      "title": "MCP server package not version-pinned",
+      "asset": "mcp:filesystem"
+    },
+    {
+      "finding_id": "ASA-653719992176",
+      "rule_id": "MEM-003",
+      "severity": "MEDIUM",
+      "status": "CONFIRMED",
+      "title": "Untrusted content written to long-term memory without provenance",
+      "asset": "memory:assistant-long-term-memory"
+    },
+    {
+      "finding_id": "ASA-F4EECF7D2366",
+      "rule_id": "MEM-004",
+      "severity": "MEDIUM",
+      "status": "CONFIRMED",
+      "title": "Memory injected into system instructions",
+      "asset": "memory:assistant-long-term-memory"
+    },
+    {
+      "finding_id": "ASA-47B855134A54",
+      "rule_id": "AUTO-006",
+      "severity": "MEDIUM",
+      "status": "CONFIRMED",
+      "title": "Approval required only by prompt instructions",
+      "asset": "tool:send_usage_report"
+    },
+    {
+      "finding_id": "ASA-93597D64F0FA",
+      "rule_id": "PI-001",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "Indirect prompt injection exposure via tool output",
+      "asset": "tool:drive_search"
+    },
+    {
+      "finding_id": "ASA-EE0634E1CE0C",
+      "rule_id": "PI-001",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "Indirect prompt injection exposure via tool output",
+      "asset": "tool:gmail_read_inbox"
+    },
+    {
+      "finding_id": "ASA-DA2EFBF54EBD",
+      "rule_id": "PI-003",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "Instruction-like payload found in agent-reachable content",
+      "asset": "content:data/inbox/email-0042.json"
+    },
+    {
+      "finding_id": "ASA-697B1293B823",
+      "rule_id": "PI-004",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "Encoded or hidden instructions in content",
+      "asset": "content:data/inbox/email-0042.json"
+    },
+    {
+      "finding_id": "ASA-55DACCC32A54",
+      "rule_id": "DATA-002",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "Sensitive data or full model context written to logs",
+      "asset": "file:src/agent.py"
+    },
+    {
+      "finding_id": "ASA-F1D8A82A9E38",
+      "rule_id": "AUTO-002",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "title": "No iteration / step limit",
+      "asset": "agent:enterprise-assistant-demo"
+    },
+    {
+      "finding_id": "ASA-F4FB00AC96F4",
+      "rule_id": "MEM-002",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "Memory without retention limit",
+      "asset": "memory:assistant-long-term-memory"
+    },
+    {
+      "finding_id": "ASA-105250B648A9",
+      "rule_id": "MEM-005",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "No memory deletion mechanism",
+      "asset": "memory:assistant-long-term-memory"
+    },
+    {
+      "finding_id": "ASA-8CC9562C7548",
+      "rule_id": "SUP-001",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "Unpinned dependency",
+      "asset": "dependency:pypi/google-api-python-client"
+    },
+    {
+      "finding_id": "ASA-1161CEB6C633",
+      "rule_id": "SUP-001",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "Unpinned dependency",
+      "asset": "dependency:pypi/google-auth"
+    },
+    {
+      "finding_id": "ASA-027AF66AC1EC",
+      "rule_id": "SUP-001",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "Unpinned dependency",
+      "asset": "dependency:pypi/openai-agents"
+    },
+    {
+      "finding_id": "ASA-79C4234C35E1",
+      "rule_id": "SUP-001",
+      "severity": "LOW",
+      "status": "CONFIRMED",
+      "title": "Unpinned dependency",
+      "asset": "dependency:pypi/requests"
+    },
+    {
+      "finding_id": "ASA-8813A26A53F4",
+      "rule_id": "MCP-011",
+      "severity": "LOW",
+      "status": "OBSERVATION",
+      "title": "Untrusted or unknown MCP server source",
+      "asset": "mcp:crm-lab"
+    },
+    {
+      "finding_id": "ASA-848A42AA4309",
+      "rule_id": "MCP-011",
+      "severity": "LOW",
+      "status": "OBSERVATION",
+      "title": "Untrusted or unknown MCP server source",
+      "asset": "mcp:filesystem"
+    },
+    {
+      "finding_id": "ASA-5915CCDAC570",
+      "rule_id": "AUTO-004",
+      "severity": "LOW",
+      "status": "OBSERVATION",
+      "title": "No budget or consumption limit",
+      "asset": "agent:enterprise-assistant-demo"
+    },
+    {
+      "finding_id": "ASA-58E182550992",
+      "rule_id": "AUTO-005",
+      "severity": "LOW",
+      "status": "OBSERVATION",
+      "title": "No kill switch / interruption mechanism declared",
+      "asset": "agent:enterprise-assistant-demo"
+    }
+  ],
+  "resolved_findings": [],
+  "controls_no_longer_verified": [
+    {
+      "control_id": "CTRL-ARCH-02",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-PI-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-PI-03",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-DATA-02",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-DATA-04",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-EXF-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-EXF-02",
+      "before": "PASSED",
+      "after": "NOT_VERIFIED"
+    },
+    {
+      "control_id": "CTRL-PERM-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-PERM-02",
+      "before": "PASSED",
+      "after": "NOT_VERIFIED"
+    },
+    {
+      "control_id": "CTRL-MCP-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-MCP-04",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-MCP-05",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-MEM-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-MEM-02",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-MEM-03",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-AUTO-01",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-AUTO-02",
+      "before": "PASSED",
+      "after": "FAILED"
+    },
+    {
+      "control_id": "CTRL-AUTO-04",
+      "before": "PASSED",
+      "after": "NOT_VERIFIED"
+    }
+  ]
+}

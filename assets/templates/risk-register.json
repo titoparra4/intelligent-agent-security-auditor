@@ -1,0 +1,24 @@
+{
+  "$comment": "Risk register template. One entry per residual or accepted risk. Field names align with finding.schema.json and the policy 'exceptions' block so entries can be copied into a policy once approved.",
+  "register_version": "1.0",
+  "target": "{{target_name}}",
+  "assessment_id": "{{assessment_id}}",
+  "policy": "{{policy_name}}@{{policy_version}}",
+  "risks": [
+    {
+      "finding_id": "ASA-000000000000",
+      "rule_id": "RULE-ID",
+      "title": "{{title}}",
+      "severity": "MEDIUM",
+      "status": "POTENTIAL",
+      "asset": "{{asset}}",
+      "owasp_references": ["ASI01:2026 Agent Goal Hijack"],
+      "treatment": "accept | mitigate | transfer | avoid",
+      "owner": "{{team or person role}}",
+      "approved_by": "{{approver role}}",
+      "justification": "{{why the residual risk is acceptable, compensating controls}}",
+      "expires": "YYYY-MM-DD",
+      "review_trigger": "{{event that forces re-assessment, e.g. new tool or permission}}"
+    }
+  ]
+}

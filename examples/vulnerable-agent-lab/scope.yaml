@@ -1,0 +1,11 @@
+# Authorization & scope for CONTROLLED DYNAMIC tests of the lab (synthetic only).
+authorized_by: "lab-owner (synthetic example)"
+target: enterprise-assistant-demo
+environment: sandbox
+synthetic_data_only: true
+expires: "2027-12-31"
+scenarios: all
+limits:
+  timeout_seconds: 20
+  memory_mb: 512
+  max_tool_calls: 50

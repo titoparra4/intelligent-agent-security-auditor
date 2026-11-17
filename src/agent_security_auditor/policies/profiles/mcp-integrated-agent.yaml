@@ -1,0 +1,31 @@
+# MCP-Integrated Agent policy - agents that load tools from MCP servers.
+policy_version: "1.0"
+name: mcp-integrated-agent
+description: Agent consuming local (STDIO) and/or remote (HTTP) MCP servers. All MCP controls are mandatory.
+human_approval:
+  required_for: [send, delete, execute, financial, infra]
+isolation:
+  require_per_user_memory: true
+  require_sandboxed_code_execution: true
+autonomy:
+  require_max_iterations: true
+blocking:
+  severities: [CRITICAL, HIGH]
+  potential_severities: [CRITICAL, HIGH]
+  require_acceptance_at: MEDIUM
+evidence:
+  accept_declared: true
+mandatory_controls:
+  - CTRL-ARCH-01
+  - CTRL-DATA-01
+  - CTRL-PI-01
+  - CTRL-PERM-01
+  - CTRL-EXF-01
+  - CTRL-AUTO-01
+  - CTRL-AUTO-03
+  - CTRL-SUP-01
+  - CTRL-MCP-01
+  - CTRL-MCP-02
+  - CTRL-MCP-03
+  - CTRL-MCP-04
+  - CTRL-MCP-05

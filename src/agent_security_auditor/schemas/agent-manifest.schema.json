@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/titoparra4/intelligent-agent-security-auditor/assets/schemas/agent-manifest.schema.json",
+  "title": "Agent Manifest",
+  "description": "Framework-neutral declaration of an agent's architecture (agent-manifest.yaml). Declarations are evidence of intent, not of enforcement; the auditor corroborates them with code where possible.",
+  "type": "object",
+  "required": ["manifest_version", "agent"],
+  "properties": {
+    "manifest_version": {"type": "string"},
+    "agent": {"$ref": "#/$defs/agent"},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}},
+    "deployment": {"type": "object", "properties": {"multi_user": {"type": "boolean"}, "environment": {"type": "string"}}},
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["name"],
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "agents": {"type": "array", "items": {"type": "string"}},
+          "operations": {"type": "array", "items": {"type": "string", "enum": ["read", "write", "delete", "send", "execute", "financial", "infra", "network", "admin"]}},
+          "data_access": {"type": "array", "items": {"type": "string"}},
+          "data_classification": {"type": "array", "items": {"type": "string", "enum": ["pii", "financial", "credentials", "health", "confidential", "public"]}},
+          "identity": {"type": "string"},
+          "permissions": {"type": "array", "items": {"type": "string"}},
+          "requires_approval": {"type": "boolean"},
+          "approval_enforced_by": {"type": "string", "pattern": "^[^:]+::[A-Za-z_][A-Za-z0-9_]*$"},
+          "returns_untrusted_content": {"type": "boolean"},
+          "output_handling": {"type": "string", "enum": ["none", "isolated", "delimited", "spotlighted", "quarantined", "sanitized", "dual-llm", "structured"]},
+          "network_destinations": {"type": "array", "items": {"type": "string"}},
+          "mcp_server": {"type": "string"},
+          "environment": {"type": "string"},
+          "tenant_scoped": {"type": "boolean"}
+        }
+      }
+    },
+    "memory": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["name"],
+        "properties": {
+          "name": {"type": "string"},
+          "kind": {"type": "string", "enum": ["short_term", "long_term", "vector", "cache"]},
+          "scope": {"type": "string", "enum": ["per_user", "per_tenant", "per_session", "shared", "unknown"]},
+          "ttl": {"type": ["string", "null"]},
+          "provenance_tracking": {"type": "boolean"},
+          "write_sources": {"type": "array", "items": {"type": "string"}},
+          "injected_into": {"type": "string", "enum": ["context", "system_prompt"]},
+          "deletion_supported": {"type": "boolean"}
+        }
+      }
+    },
+    "data_sources": {"type": "array", "items": {"type": "object", "required": ["name"]}},
+    "network": {"type": "object", "properties": {"allowed_destinations": {"type": "array", "items": {"type": "string"}}}},
+    "telemetry": {"type": "array", "items": {"type": "string"}},
+    "mcp_servers": {"type": "object", "additionalProperties": {"type": "object", "properties": {"trusted": {"type": "boolean"}, "owner": {"type": "string"}, "reviewed": {"type": "string"}}}},
+    "mcp_tool_pins": {"type": "object", "additionalProperties": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "delegations": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["from", "to"],
+        "properties": {"from": {"type": "string"}, "to": {"type": "string"}, "channel": {"type": "string"}, "authenticated": {"type": "boolean"}, "inherit_permissions": {"type": "boolean"}}
+      }
+    }
+  },
+  "$defs": {
+    "agent": {
+      "type": "object", "required": ["name"],
+      "properties": {
+        "name": {"type": "string"},
+        "framework": {"type": "string"},
+        "model": {"type": "string"},
+        "provider": {"type": "string"},
+        "identity": {"type": "string"},
+        "instructions_file": {"type": "string"},
+        "tools": {"type": "array", "items": {"type": "string"}},
+        "sub_agents": {"type": "array", "items": {"type": "string"}},
+        "allow_delegation": {"type": "boolean"},
+        "exposed_to": {"type": "array", "items": {"type": "string"}},
+        "limits": {"type": "object", "properties": {"max_iterations": {"type": "integer", "minimum": 1}, "budget": {"type": "string"}, "timeout_seconds": {"type": "integer"}}},
+        "human_oversight": {"type": "object", "properties": {"kill_switch": {"type": "string"}, "approval_channel": {"type": "string"}, "mode": {"type": "string"}}},
+        "code_execution": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "sandboxed": {"type": "boolean"}}}
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"mcpServers": {"a": {"command": 42, "args": "not-a-list", "env": ["x"]}, "b": "string", "c": {"url": null}}}

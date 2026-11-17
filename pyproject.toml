@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intelligent-agent-security-auditor"
+version = "1.0.0"
+description = "Evidence-based, offline-first security auditor for AI agents: architecture, tools, permissions, MCP, memory, autonomy, multi-agent and exfiltration risks."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "titoparra4 and contributors" }]
+keywords = ["ai-security", "agents", "llm", "mcp", "owasp", "agentic", "security-audit", "agent-skills"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+]
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "jsonschema>=4.20"]
+
+[project.scripts]
+agent-security-auditor = "agent_security_auditor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/titoparra4/intelligent-agent-security-auditor"
+Issues = "https://github.com/titoparra4/intelligent-agent-security-auditor/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+agent_security_auditor = ["policies/profiles/*.yaml", "schemas/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+pythonpath = ["src"]

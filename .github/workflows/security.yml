@@ -1,0 +1,66 @@
+name: security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  self-audit:
+    # Static audits of this repository's own examples; produces SARIF for code scanning.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - name: Validate policies
+        run: |
+          for p in examples/policies/*.yaml; do
+            case "$p" in *invalid-policy.yaml) continue;; esac
+            agent-security-auditor policy validate "$p"
+          done
+      - name: Audit the secure reference agent (must stay READY)
+        run: agent-security-auditor audit examples/secure-agent --format sarif,json -o reports
+      - name: Upload SARIF
+        if: always() && github.event_name != 'pull_request'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/agent-security-assessment.sarif
+          category: agent-security-secure-agent
+
+  dependency-and-secret-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: pip-audit on the auditor's own dependencies
+        run: |
+          python -m pip install pip-audit
+          echo "PyYAML>=6.0" > /tmp/auditor-requirements.txt
+          pip-audit --strict -r /tmp/auditor-requirements.txt
+      - name: Bandit (static analysis of the auditor's source)
+        run: |
+          python -m pip install bandit
+          bandit -q -r src -ll
+      - name: No real secrets in the repository (auditor's own secret scanner)
+        run: |
+          python -m pip install -e .
+          # the MCP example contains one intentionally fake inline credential (documented in its README)
+          python scripts/scan_secrets.py . --exclude examples/mcp-security/.vscode/mcp.json --exclude .venv
