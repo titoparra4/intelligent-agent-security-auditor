@@ -33,9 +33,17 @@ class PermissionAnalyzer:
             status = FindingStatus.CONFIRMED if t.permission_provenance in ("code", "configured", "declared") else FindingStatus.POTENTIAL
             conf = Confidence.HIGH if t.permission_provenance in ("code", "configured") else Confidence.MEDIUM
             line = _perm_line(ctx, t)
+            denied_norm = {_norm_scope(d) for d in pol.denied_scopes}
             for p in t.permissions:
                 info = scope_info(p)
                 if info is None:
+                    # unknown scopes are not guessed, but a policy denial applies regardless of the catalog
+                    if _norm_scope(p) in denied_norm:
+                        res.findings.append(make_finding(
+                            "PERM-001", f"tool:{t.name}",
+                            [evidence_at(ctx, t.file, line, etype, f"scope '{p}' is denied by policy {pol.name}")],
+                            status, conf, detail=f"Scope '{p}' is denied by policy.",
+                            affected_permissions=[p], trust_boundary="TB-TOOLS", discriminator=p))
                     continue
                 if info.admin and not pol.allow_admin_permissions:
                     res.findings.append(make_finding(
@@ -44,7 +52,7 @@ class PermissionAnalyzer:
                     continue
                 ops = set(t.operations) - {"network"}
                 excess = set(info.operations) - ops
-                denied = p in pol.denied_scopes
+                denied = _norm_scope(p) in denied_norm
                 if denied or (info.broad and excess):
                     alt = f" Narrower alternative: {info.narrower_alternative}." if info.narrower_alternative else ""
                     res.findings.append(make_finding(
@@ -122,6 +130,11 @@ class PermissionAnalyzer:
         res.limitations.append("Effective permissions are not tested against live identity providers; 'verified' "
                                "provenance requires controlled dynamic testing with synthetic credentials.")
         return res
+
+
+def _norm_scope(s: str) -> str:
+    """Normalise scopes identically on both sides (case, whitespace, trailing slash) to avoid bypasses."""
+    return s.strip().casefold().rstrip("/")
 
 
 def _perm_line(ctx: AuditContext, t) -> int | None:

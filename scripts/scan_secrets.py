@@ -37,7 +37,7 @@ def main(argv: list[str]) -> int:
     hits = [f for f in a.findings if f.rule_id in ("DATA-001", "DATA-004", "MCP-004")]
     if "--json" in argv:
         print(json.dumps([{"rule": f.rule_id, "severity": f.severity.value, "file": f.source_file, "line": f.source_line,
-                           "detail": f.evidence[0].note, "snippet": f.evidence[0].snippet} for f in hits], indent=2))
+                           "detail": f.evidence[0].note} for f in hits], indent=2))  # location + type only, no snippets
     else:
         for f in hits:
             print(f"{f.severity.value:<8} {f.rule_id}  {f.source_file}:{f.source_line}  {f.evidence[0].note}")

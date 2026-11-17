@@ -64,8 +64,9 @@ class McpAnalyzer:
                         severity=Severity.LOW if cls == "loopback" else Severity.MEDIUM))
             for k in s.inline_secret_keys:
                 res.findings.append(make_finding(
-                    "MCP-004", asset, [_with_note(evidence_at(ctx, s.file, _line(ctx, s.file, k), EvidenceType.CONFIGURATION),
-                                                  f"key {k} holds a literal value (redacted)")],
+                    # no snippet: the value may not match any secret pattern, so it cannot be redacted reliably
+                    "MCP-004", asset, [Evidence(EvidenceType.CONFIGURATION, s.file, _line(ctx, s.file, k), None,
+                                                f"key {k} holds a literal value (value not shown)")],
                     FindingStatus.CONFIRMED, Confidence.HIGH, discriminator=k))
             # filesystem / fetch scope
             if s.transport == "stdio":
