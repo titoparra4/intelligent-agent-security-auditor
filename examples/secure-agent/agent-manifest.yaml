@@ -1,0 +1,83 @@
+# Agent manifest for the secure reference agent.
+manifest_version: "1.0"
+agent:
+  name: enterprise-assistant-secure
+  framework: openai-agents
+  model: gpt-4.1
+  provider: openai
+  identity: svc-enterprise-assistant
+  instructions_file: prompts/system.md
+  exposed_to: [email, documents]
+  limits:
+    max_iterations: 8
+    budget: "2 USD per run; 50 USD per day"
+    timeout_seconds: 120
+  human_oversight:
+    kill_switch: "feature flag assistant.enabled + revocation of svc-enterprise-assistant credentials"
+    approval_channel: "approval_service (in-app, blocking)"
+deployment:
+  multi_user: true
+tools:
+  - name: gmail_read_inbox
+    description: Read the latest emails from the user's inbox (simulated Gmail)
+    operations: [read]
+    data_access: [email]
+    data_classification: [pii, confidential]
+    identity: svc-gmail-reader
+    returns_untrusted_content: true
+    output_handling: spotlighted
+  - name: drive_search
+    description: Search documents in Drive (simulated)
+    operations: [read]
+    data_access: [documents]
+    data_classification: [confidential]
+    identity: svc-drive-reader
+    returns_untrusted_content: true
+    output_handling: spotlighted
+  - name: crm_lookup
+    description: Look up customer records of the caller's tenant (simulated CRM)
+    operations: [read]
+    data_access: [database]
+    data_classification: [pii]
+    identity: svc-crm-reader
+    permissions: ["crm.customers:read-own-tenant"]
+    tenant_scoped: true
+    output_handling: spotlighted
+  - name: send_usage_report
+    description: Send a usage summary to the internal reporting service
+    operations: [send, network]
+    data_access: [web]
+    identity: svc-reports-writer
+    permissions: ["reports.internal.example:ingest"]
+    requires_approval: true
+    approval_enforced_by: "src/agent.py::require_approval"
+    network_destinations: ["https://reports.internal.example/ingest"]
+  - name: lookup_customer
+    description: Read-only customer tier lookup (local crm-lab MCP server)
+    operations: [read]
+    data_access: [database]
+    data_classification: [confidential]
+    identity: local-stdio-user
+    permissions: ["crm-lab:lookup (read-only, local)"]
+    tenant_scoped: true
+    returns_untrusted_content: false
+    mcp_server: crm-lab
+memory:
+  - name: assistant-user-memory
+    kind: long_term
+    scope: per_user
+    ttl: 30d
+    provenance_tracking: true
+    write_sources: [user]
+    injected_into: context
+    deletion_supported: true
+network:
+  allowed_destinations: ["*.googleapis.com", "reports.internal.example"]
+mcp_servers:
+  crm-lab:
+    trusted: true
+    owner: platform-team (synthetic)
+    reviewed: "2026-11-01"
+mcp_tool_pins:
+  crm-lab:
+    lookup_customer: "sha256:7acd0bfff03e5819a41bcd98c1c13363648141fd150b7b74972ba1dd58942364"

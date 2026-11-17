@@ -1,0 +1,51 @@
+# Enterprise Agent policy - multi-user agent with access to business data.
+policy_version: "1.0"
+name: enterprise-agent
+description: Agent operating on enterprise data for multiple users. Adds identity, memory, supply-chain and egress-flow controls.
+forbidden_operations: [infra, admin]
+permissions:
+  allow_admin: false
+  denied_scopes:
+    - https://mail.google.com/
+    - https://www.googleapis.com/auth/drive
+    - Directory.ReadWrite.All
+    - Sites.FullControl.All
+data:
+  restricted: [pii, financial, credentials, confidential]
+human_approval:
+  required_for: [send, delete, write, execute, financial, infra]
+isolation:
+  require_per_user_memory: true
+  require_sandboxed_code_execution: true
+autonomy:
+  require_max_iterations: true
+blocking:
+  severities: [CRITICAL, HIGH]
+  potential_severities: [CRITICAL, HIGH]
+  require_acceptance_at: MEDIUM
+evidence:
+  accept_declared: true
+mandatory_controls:
+  - CTRL-ARCH-01
+  - CTRL-ARCH-02
+  - CTRL-DATA-01
+  - CTRL-DATA-02
+  - CTRL-DATA-04
+  - CTRL-PI-01
+  - CTRL-PI-02
+  - CTRL-PERM-01
+  - CTRL-PERM-02
+  - CTRL-PERM-03
+  - CTRL-EXF-01
+  - CTRL-AUTO-01
+  - CTRL-AUTO-02
+  - CTRL-AUTO-03
+  - CTRL-MEM-01
+  - CTRL-MEM-02
+  - CTRL-MEM-03
+  - CTRL-SUP-01
+  - CTRL-MCP-01
+  - CTRL-MCP-02
+  - CTRL-MCP-03
+  - CTRL-MCP-04
+  - CTRL-MA-01

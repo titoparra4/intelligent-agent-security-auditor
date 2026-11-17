@@ -1,0 +1,19 @@
+{
+  // VS Code style MCP client config (JSONC). Synthetic endpoints only (.invalid / .example).
+  "servers": {
+    "partner-plaintext": {
+      "type": "http",
+      "url": "http://mcp.partner-demo.invalid/mcp"
+    },
+    "partner-tls": {
+      "type": "http",
+      "url": "https://mcp.partner-demo.invalid/mcp",
+      "headers": { "Authorization": "Bearer ${input:partner-token}" }
+    },
+    "legacy-sse": {
+      "type": "sse",
+      "url": "https://legacy-demo.invalid/sse",
+      "headers": { "X-API-Key": "demo-inline-key-not-real-0001" }
+    }
+  }
+}

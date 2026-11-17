@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/titoparra4/intelligent-agent-security-auditor/assets/schemas/policy.schema.json",
+  "title": "Agent Security Policy",
+  "description": "Declarative, Git-versionable security policy evaluated by intelligent-agent-security-auditor. Validated before any audit runs.",
+  "type": "object",
+  "required": ["policy_version", "name", "blocking", "mandatory_controls"],
+  "additionalProperties": false,
+  "properties": {
+    "policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"},
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9\\-]{1,63}$"},
+    "description": {"type": "string"},
+    "tools": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "authorized": {"type": ["array", "null"], "items": {"type": "string"}, "description": "If set, only these tools are allowed."},
+        "forbidden": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "forbidden_operations": {"type": "array", "items": {"type": "string", "enum": ["read", "write", "delete", "send", "execute", "financial", "infra", "network", "admin"]}, "uniqueItems": true},
+    "permissions": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "denied_scopes": {"type": "array", "items": {"type": "string"}},
+        "allow_admin": {"type": "boolean"}
+      }
+    },
+    "network": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"allowed_destinations": {"type": "array", "items": {"type": "string"}}}
+    },
+    "data": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"restricted": {"type": "array", "items": {"type": "string", "enum": ["pii", "financial", "credentials", "health", "confidential"]}}}
+    },
+    "human_approval": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"required_for": {"type": "array", "items": {"type": "string", "enum": ["write", "delete", "send", "execute", "financial", "infra", "network", "admin"]}}}
+    },
+    "isolation": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "require_per_user_memory": {"type": "boolean"},
+        "require_sandboxed_code_execution": {"type": "boolean"}
+      }
+    },
+    "autonomy": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"require_max_iterations": {"type": "boolean"}}
+    },
+    "mcp": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"trusted_servers": {"type": "array", "items": {"type": "string"}}}
+    },
+    "blocking": {
+      "type": "object", "additionalProperties": false,
+      "required": ["severities"],
+      "properties": {
+        "severities": {"type": "array", "items": {"$ref": "#/$defs/severity"}, "description": "CONFIRMED findings at these severities block deployment."},
+        "potential_severities": {"type": "array", "items": {"$ref": "#/$defs/severity"}, "description": "POTENTIAL findings at these severities block deployment."},
+        "require_acceptance_at": {"$ref": "#/$defs/severity", "description": "Open CONFIRMED/POTENTIAL findings at or above this level need an approved exception."}
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"accept_declared": {"type": "boolean", "description": "Whether manifest declarations count as evidence for design controls."}}
+    },
+    "mandatory_controls": {"type": "array", "items": {"type": "string", "pattern": "^CTRL-[A-Z]+-[0-9A-Z]+$"}, "uniqueItems": true},
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["owner", "justification", "approved_by", "expires"],
+        "properties": {
+          "finding_id": {"type": "string", "pattern": "^ASA-[0-9A-F]{12}$"},
+          "rule_id": {"type": "string"},
+          "asset": {"type": "string"},
+          "owner": {"type": "string", "minLength": 2},
+          "justification": {"type": "string", "minLength": 10},
+          "approved_by": {"type": "string", "minLength": 2},
+          "expires": {"type": "string", "format": "date"}
+        }
+      }
+    },
+    "scoring": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"weights": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0}}}
+    }
+  },
+  "$defs": {
+    "severity": {"type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]}
+  }
+}

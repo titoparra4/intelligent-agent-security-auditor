@@ -1,0 +1,5 @@
+# INTENTIONALLY UNPINNED (lab vulnerability SUP-001/SUP-002) - never install this lab
+openai-agents
+requests>=2.0
+google-api-python-client
+google-auth

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/titoparra4/intelligent-agent-security-auditor/assets/schemas/finding.schema.json",
+  "title": "Agent Security Finding",
+  "description": "One finding produced by intelligent-agent-security-auditor (schema 1.0.0). Severity, confidence and status are independent axes.",
+  "type": "object",
+  "required": ["finding_id", "display_id", "rule_id", "title", "description", "module", "category", "severity", "confidence", "status", "asset", "source_file", "source_line", "evidence", "evidence_type", "attack_preconditions", "impact", "likelihood", "affected_permissions", "trust_boundary", "owasp_references", "nist_references", "remediation", "verification_steps", "first_seen", "assessment_id"],
+  "additionalProperties": false,
+  "properties": {
+    "finding_id": {"type": "string", "pattern": "^ASA-[0-9A-F]{12}$", "description": "Stable id: same rule + asset + file + discriminator across audits."},
+    "display_id": {"type": "string", "pattern": "^(SEC-[0-9]{3,}|)$"},
+    "rule_id": {"type": "string", "pattern": "^[A-Z]+-[0-9A-Z]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "module": {"type": "string", "pattern": "^M(0[1-9]|1[0-2])$"},
+    "category": {"type": "string", "enum": ["Data Privacy", "Data Leakage", "Spyware & Malware", "Prompt Injection", "Identity & Access", "API & MCP Security", "Supply Chain", "Code Execution", "Agent Autonomy", "Memory Security", "RAG & Vector Database Security", "Network Security", "Inter-Agent Security", "Audit & Monitoring", "Compliance & Governance"]},
+    "severity": {"type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]},
+    "confidence": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
+    "status": {"type": "string", "enum": ["CONFIRMED", "POTENTIAL", "OBSERVATION", "NOT_VERIFIED"]},
+    "asset": {"type": "string", "minLength": 1},
+    "source_file": {"type": ["string", "null"]},
+    "source_line": {"type": ["integer", "null"], "minimum": 1},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "evidence_type": {"$ref": "#/$defs/evidence_type"},
+    "attack_preconditions": {"type": "array", "items": {"type": "string"}},
+    "impact": {"type": "string"},
+    "likelihood": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]},
+    "affected_permissions": {"type": "array", "items": {"type": "string"}},
+    "trust_boundary": {"type": ["string", "null"]},
+    "owasp_references": {"type": "array", "items": {"type": "string"}},
+    "nist_references": {"type": "array", "items": {"type": "string"}},
+    "other_references": {"type": "array", "items": {"type": "string"}},
+    "remediation": {"type": "string", "minLength": 1},
+    "verification_steps": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "requires_specialized_review": {"type": "boolean"},
+    "accepted_risk": {"type": ["object", "null"]},
+    "first_seen": {"type": "string"},
+    "assessment_id": {"type": "string"}
+  },
+  "$defs": {
+    "evidence_type": {"type": "string", "enum": ["code", "configuration", "declaration", "dependency_metadata", "content", "absence", "inference", "policy", "dynamic_trace"]},
+    "evidence": {
+      "type": "object",
+      "required": ["type", "file", "line", "snippet", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {"$ref": "#/$defs/evidence_type"},
+        "file": {"type": ["string", "null"]},
+        "line": {"type": ["integer", "null"], "minimum": 1},
+        "snippet": {"type": ["string", "null"], "description": "Sanitized: secrets, tokens, card numbers and e-mail local parts are redacted."},
+        "note": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

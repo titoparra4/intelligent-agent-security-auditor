@@ -1,0 +1,11 @@
+# Deliberately INVALID policy used by tests and docs to show schema validation (exit 78).
+policy_version: one
+name: Invalid Policy!
+blocking:
+  severities: [SEVERE]
+mandatory_controls: [not-a-control]
+exceptions:
+  - rule_id: SUP-002
+    owner: x
+    justification: short
+    expires: "next week"

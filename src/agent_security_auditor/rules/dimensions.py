@@ -1,0 +1,127 @@
+"""Cross-cutting coverage matrix: 15 security dimensions x 12 modules.
+
+Each dimension documents risks, assets, expected controls, analysis methods, available tests,
+required evidence, limitations and recommendations. Relevance (criticality) is computed per
+audit from the agent's actual capabilities - dimensions do not weigh the same for every agent.
+"""
+
+from __future__ import annotations
+
+from typing import Any, Callable
+
+from agent_security_auditor.models.inventory import Inventory
+
+D = dict[str, Any]
+
+
+def _rel(level: str, why: str) -> tuple[str, str]:
+    return level, why
+
+
+DIMENSION_SPECS: list[D] = [
+    {"name": "Data Privacy", "modules": ["M03", "M04", "M07"],
+     "risks": "Personal data processed, retained or shared beyond purpose; no erasure",
+     "assets": "PII in tools, memory, logs, telemetry", "controls": ["CTRL-DATA-04", "CTRL-MEM-03", "CTRL-EXF-03"],
+     "methods": "Manifest declarations, memory config, telemetry imports", "tests": ["ADV-PRIV-001", "ADV-MEM-002"],
+     "evidence": "Data classification, retention/TTL, deletion procedure, telemetry declaration",
+     "limitations": "Technical controls only; no legal (GDPR) compliance determination",
+     "recommendation": "Classify data per tool, minimise, set retention and provide erasure"},
+    {"name": "Data Leakage", "modules": ["M01", "M03", "M06"],
+     "risks": "Secrets or sensitive data disclosed via responses, logs, egress tools or configs",
+     "assets": "Credentials, documents, customer records", "controls": ["CTRL-DATA-01", "CTRL-DATA-02", "CTRL-DATA-03", "CTRL-ARCH-02"],
+     "methods": "Secret patterns + entropy, source->sink flow analysis, logging AST analysis",
+     "tests": ["ADV-DATA-001", "ADV-EXF-001"], "evidence": "Redacted secret locations, data-flow graph",
+     "limitations": "Pattern-based secrets; conservative flow assumption", "recommendation": "Secret manager + DLP on egress"},
+    {"name": "Spyware & Malware", "modules": ["M04", "M08"],
+     "risks": "Covert collection, hidden execution, persistence, malicious dependencies",
+     "assets": "Host, user devices, credential stores", "controls": ["CTRL-EXF-02", "CTRL-SUP-02"],
+     "methods": "Capability indicators (clipboard, camera, keylogging, credential paths), obfuscation, persistence",
+     "tests": [], "evidence": "Code locations of capability use; declared purpose",
+     "limitations": "Indicators only; no behavioral malware analysis", "recommendation": "Remove or declare capabilities"},
+    {"name": "Prompt Injection", "modules": ["M02", "M06", "M11"],
+     "risks": "Direct/indirect/encoded injection hijacking goals or tools",
+     "assets": "Agent goal, tool calls", "controls": ["CTRL-PI-01", "CTRL-PI-02", "CTRL-PI-03", "CTRL-MCP-04", "CTRL-PI-B1"],
+     "methods": "Untrusted-content mapping, instruction construction, payload scanning",
+     "tests": ["ADV-PI-001", "ADV-PI-002", "ADV-PI-003", "ADV-PI-004", "ADV-PI-005"],
+     "evidence": "Tool output handling declaration, sandbox traces", "limitations": "Static analysis shows exposure, not exploitation",
+     "recommendation": "Isolate untrusted content; enforce authorization outside the model"},
+    {"name": "Identity & Access", "modules": ["M05", "M10"],
+     "risks": "Over-scoped credentials, shared identities, inherited privileges",
+     "assets": "OAuth tokens, service accounts, DB roles", "controls": ["CTRL-PERM-01", "CTRL-PERM-02", "CTRL-PERM-03", "CTRL-MA-01"],
+     "methods": "Scope catalog (Google, Microsoft Graph, GitHub, Slack), role patterns, identity map",
+     "tests": ["ADV-PRIV-001", "ADV-ID-001"], "evidence": "Permission matrix with provenance",
+     "limitations": "Effective permissions not tested against live IdPs", "recommendation": "Least privilege per tool identity"},
+    {"name": "API & MCP Security", "modules": ["M06"],
+     "risks": "Tool poisoning, token passthrough, unauthenticated remote servers, rug pulls",
+     "assets": "MCP servers, tool definitions, tokens", "controls": ["CTRL-MCP-01", "CTRL-MCP-02", "CTRL-MCP-03", "CTRL-MCP-04", "CTRL-MCP-05"],
+     "methods": "Transport-aware config analysis, description scanning, definition pinning",
+     "tests": ["ADV-MCP-001"], "evidence": "MCP configs, server source, mcp-tools.lock.json",
+     "limitations": "Remote/package tool definitions are not fetched", "recommendation": "Pin servers and tool definitions"},
+    {"name": "Supply Chain", "modules": ["M08", "M06"],
+     "risks": "Unpinned/compromised packages, install hooks, runtime installation",
+     "assets": "Dependencies, MCP packages, plugins", "controls": ["CTRL-SUP-01", "CTRL-SUP-02", "CTRL-SUP-03", "CTRL-MCP-01"],
+     "methods": "Manifest/lockfile analysis, offline OSV matching (opt-in)", "tests": [],
+     "evidence": "Lockfiles, pins, advisory matches", "limitations": "No transitive resolution; CVE check only with --vuln-db",
+     "recommendation": "Lockfiles with hashes; reviewed updates"},
+    {"name": "Code Execution", "modules": ["M09", "M06"],
+     "risks": "Model-driven code/shell execution on host", "assets": "Host, credentials, network",
+     "controls": ["CTRL-AUTO-03", "CTRL-MCP-05"], "methods": "Executor/REPL/subprocess/eval detection",
+     "tests": ["ADV-EXEC-001"], "evidence": "Executor configuration (sandboxed or not)",
+     "limitations": "Sandbox strength is not measured", "recommendation": "Isolated executors without credentials/egress"},
+    {"name": "Agent Autonomy", "modules": ["M09"],
+     "risks": "Irreversible actions without approval, runaway loops, unbounded spend",
+     "assets": "External systems acted upon", "controls": ["CTRL-AUTO-01", "CTRL-AUTO-02", "CTRL-AUTO-04", "CTRL-AUTO-B1"],
+     "methods": "Operation classification, approval enforcement evidence, limits",
+     "tests": ["ADV-AUTO-001", "ADV-APPR-001", "ADV-ERR-001"], "evidence": "Approval gate code reference, limits",
+     "limitations": "Approval UX quality only testable dynamically", "recommendation": "Enforce approval in code"},
+    {"name": "Memory Security", "modules": ["M07"],
+     "risks": "Memory poisoning, cross-user leakage, excessive retention", "assets": "Long-term memory, vector stores",
+     "controls": ["CTRL-MEM-01", "CTRL-MEM-02", "CTRL-MEM-03", "CTRL-MEM-B1"],
+     "methods": "Memory scope/provenance/TTL declarations, vector-store detection", "tests": ["ADV-MEM-001", "ADV-MEM-002"],
+     "evidence": "Memory configuration", "limitations": "Code detection limited to known classes",
+     "recommendation": "Partition, provenance, TTL, deletion"},
+    {"name": "RAG & Vector Database Security", "modules": ["M02", "M07"],
+     "risks": "Poisoned corpora, embedding store cross-tenant access", "assets": "Knowledge base, embeddings",
+     "controls": ["CTRL-PI-03", "CTRL-MEM-01"], "methods": "Corpus payload scanning, collection scoping",
+     "tests": ["ADV-PI-003"], "evidence": "Corpus files, collection/namespace configuration",
+     "limitations": "Embeddings themselves are not analysed", "recommendation": "Ingestion scanning, per-tenant namespaces"},
+    {"name": "Network Security", "modules": ["M04", "M06"],
+     "risks": "Uncontrolled egress, plaintext transport, exposed listeners", "assets": "Network destinations",
+     "controls": ["CTRL-EXF-01", "CTRL-MCP-02"], "methods": "Literal URL / HTTP client analysis, allowlist matching",
+     "tests": ["ADV-EXF-001"], "evidence": "Egress inventory", "limitations": "Runtime-built URLs not resolved",
+     "recommendation": "Egress proxy with allowlist"},
+    {"name": "Inter-Agent Security", "modules": ["M10"],
+     "risks": "Impersonation, privilege propagation, delegation loops", "assets": "Agent identities, channels",
+     "controls": ["CTRL-MA-01", "CTRL-MA-02"], "methods": "Delegation graph construction",
+     "tests": ["ADV-MA-001"], "evidence": "Delegation graph", "limitations": "Runtime delegation needs declaration",
+     "recommendation": "Authenticated channels, per-agent scopes"},
+    {"name": "Audit & Monitoring", "modules": ["M03", "M09", "M12"],
+     "risks": "Actions not attributable, sensitive logs, no kill switch", "assets": "Logs, audit trail",
+     "controls": ["CTRL-PERM-02", "CTRL-DATA-03", "CTRL-AUTO-04"], "methods": "Identity attribution, logging analysis",
+     "tests": [], "evidence": "Per-tool identities, log redaction, kill switch",
+     "limitations": "Log pipeline outside repository not visible", "recommendation": "Attributable, redacted audit logs"},
+    {"name": "Compliance & Governance", "modules": ["M01", "M05", "M12"],
+     "risks": "Undocumented architecture, policy violations, unmanaged exceptions",
+     "assets": "Policy, manifest, exceptions", "controls": ["CTRL-ARCH-01", "CTRL-PERM-03", "CTRL-ADV-01"],
+     "methods": "Policy evaluation, manifest presence, exception expiry",
+     "tests": [], "evidence": "Versioned policy and manifest", "limitations": "Not a legal/regulatory certification",
+     "recommendation": "Version policy + manifest with the agent; review exceptions before expiry"},
+]
+
+RELEVANCE: dict[str, Callable[[Inventory], tuple[str, str]]] = {
+    "Data Privacy": lambda inv: _rel("HIGH", "agent touches personal data") if any("pii" in t.sensitivity for t in inv.tools) else _rel("MEDIUM", "no PII tools detected"),
+    "Data Leakage": lambda inv: _rel("HIGH", "sensitive data + egress") if any(t.touches_sensitive for t in inv.tools) and any(t.is_egress for t in inv.tools) else _rel("MEDIUM", "always relevant"),
+    "Spyware & Malware": lambda inv: _rel("MEDIUM", "always relevant for third-party code"),
+    "Prompt Injection": lambda inv: _rel("HIGH", "reads untrusted content") if any(t.reads_untrusted for t in inv.tools) else _rel("MEDIUM", "user input only"),
+    "Identity & Access": lambda inv: _rel("HIGH", "tools hold credentials") if any(t.permissions or t.identity for t in inv.tools) else _rel("MEDIUM", "credentials not declared"),
+    "API & MCP Security": lambda inv: _rel("HIGH", f"{len(inv.mcp_servers)} MCP server(s)") if inv.mcp_servers else _rel("N/A", "no MCP"),
+    "Supply Chain": lambda inv: _rel("MEDIUM", f"{len(inv.dependencies)} dependency declaration(s)") if inv.dependencies or inv.mcp_servers else _rel("LOW", "no dependencies"),
+    "Code Execution": lambda inv: _rel("CRITICAL", "code execution capability") if inv.code_execution or any(a.code_execution for a in inv.agents) else _rel("N/A", "no execution capability"),
+    "Agent Autonomy": lambda inv: _rel("HIGH", "irreversible tools") if any(t.is_irreversible for t in inv.tools) else _rel("MEDIUM", "read-mostly tools"),
+    "Memory Security": lambda inv: _rel("HIGH", "persistent memory") if any(m.kind != "short_term" for m in inv.memory) else (_rel("LOW", "short-term only") if inv.memory else _rel("N/A", "no memory")),
+    "RAG & Vector Database Security": lambda inv: _rel("HIGH", "vector store / RAG") if any(m.kind == "vector" for m in inv.memory) or any("rag" in t.data_access for t in inv.tools) else _rel("N/A", "no RAG"),
+    "Network Security": lambda inv: _rel("HIGH", "outbound data transfers") if any(d.carries_data for d in inv.network) else _rel("MEDIUM", "always relevant"),
+    "Inter-Agent Security": lambda inv: _rel("HIGH", "multi-agent") if inv.delegations else _rel("N/A", "single agent"),
+    "Audit & Monitoring": lambda inv: _rel("MEDIUM", "always relevant"),
+    "Compliance & Governance": lambda inv: _rel("MEDIUM", "always relevant"),
+}

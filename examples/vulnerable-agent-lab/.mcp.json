@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "crm-lab": {
+      "command": "python",
+      "args": ["mcp_server/crm_server.py"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"]
+    }
+  }
+}

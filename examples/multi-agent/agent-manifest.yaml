@@ -1,0 +1,31 @@
+# Synthetic multi-agent manifest - declares the facts static analysis cannot see.
+manifest_version: "1.0"
+agent:
+  name: triage-agent
+  framework: openai-agents
+  exposed_to: [email]
+agents:
+  - name: research-agent
+    framework: openai-agents
+    sub_agents: [writer-agent]
+deployment:
+  multi_user: false
+delegations:
+  - from: triage-agent
+    to: finance-agent
+    channel: http
+    authenticated: false
+    inherit_permissions: true
+  - from: research-agent
+    to: writer-agent
+    channel: in-process
+    authenticated: true
+    inherit_permissions: false
+tools:
+  - name: transfer_funds
+    agents: [finance-agent]
+    operations: [financial]
+    data_access: [payments]
+    identity: svc-payments
+    permissions: ["payments:transfer"]
+    requires_approval: false

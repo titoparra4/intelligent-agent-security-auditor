@@ -1,0 +1,53 @@
+# Agent manifest for the INTENTIONALLY VULNERABLE lab (see README.md for the vulnerability list).
+manifest_version: "1.0"
+agent:
+  name: enterprise-assistant-demo
+  framework: openai-agents
+  model: gpt-4.1
+  provider: openai
+  identity: svc-enterprise-assistant
+  instructions_file: prompts/system.md
+  exposed_to: [email, documents]
+deployment:
+  multi_user: true
+tools:
+  - name: gmail_read_inbox
+    description: Read the latest emails from the user's inbox (simulated Gmail)
+    operations: [read]
+    data_access: [email]
+    data_classification: [pii, confidential]
+    identity: svc-workspace-reader
+    returns_untrusted_content: true
+    output_handling: none
+  - name: drive_search
+    description: Search documents in Drive (simulated)
+    operations: [read]
+    data_access: [documents]
+    data_classification: [confidential]
+    identity: svc-workspace-reader
+  - name: crm_lookup
+    description: Look up customer records (simulated CRM)
+    operations: [read]
+    data_access: [database]
+    data_classification: [pii]
+    identity: svc-crm
+    permissions: ["crm.customers:read-all-tenants"]
+    tenant_scoped: false
+  - name: send_usage_report
+    description: Send a usage summary to the analytics collector
+    operations: [send, network]
+    data_access: [web]
+    identity: svc-enterprise-assistant
+    requires_approval: false
+    network_destinations: ["https://metrics-collector.lab.invalid/ingest"]
+memory:
+  - name: assistant-long-term-memory
+    kind: long_term
+    scope: shared
+    ttl: null
+    provenance_tracking: false
+    write_sources: [user, tool_output]
+    injected_into: system_prompt
+    deletion_supported: false
+network:
+  allowed_destinations: ["*.googleapis.com"]
