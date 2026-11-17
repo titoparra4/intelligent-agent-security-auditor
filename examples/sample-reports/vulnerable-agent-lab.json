@@ -8,8 +8,8 @@
   "target": "examples/vulnerable-agent-lab",
   "target_name": "enterprise-assistant-demo",
   "mode": "static",
-  "started_at": "2026-11-17T10:37:31Z",
-  "finished_at": "2026-11-17T10:37:31Z",
+  "started_at": "2026-11-17T10:44:09Z",
+  "finished_at": "2026-11-17T10:44:09Z",
   "policy": {
     "name": "basic-agent",
     "policy_version": "1.0",
@@ -227,7 +227,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -280,7 +280,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -333,7 +333,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -384,7 +384,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -434,7 +434,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -486,7 +486,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -561,7 +561,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -612,7 +612,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -662,7 +662,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -712,7 +712,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -766,7 +766,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -819,7 +819,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -870,7 +870,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -919,7 +919,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -969,7 +969,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1021,7 +1021,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1073,7 +1073,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1126,7 +1126,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1176,7 +1176,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1227,7 +1227,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1275,7 +1275,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1325,7 +1325,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1374,7 +1374,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1425,7 +1425,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1476,7 +1476,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1527,7 +1527,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1578,7 +1578,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1626,7 +1626,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1674,7 +1674,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1722,7 +1722,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1770,7 +1770,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     },
     {
@@ -1818,7 +1818,7 @@
       ],
       "requires_specialized_review": false,
       "accepted_risk": null,
-      "first_seen": "2026-11-17T10:37:31Z",
+      "first_seen": "2026-11-17T10:44:09Z",
       "assessment_id": "ASSESSMENT-EXAMPLE"
     }
   ],

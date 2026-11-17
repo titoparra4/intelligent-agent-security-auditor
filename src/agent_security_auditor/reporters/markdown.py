@@ -12,7 +12,24 @@ SEV_ORDER = ("CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO")
 
 def _esc(v: Any) -> str:
     s = "" if v is None else str(v)
+    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     return s.replace("|", "\\|").replace("\n", " ").replace("`", "'")
+
+
+def _inline(v: Any) -> str:
+    """Neutralise Markdown/HTML in untrusted text rendered outside tables (audited content is hostile)."""
+    s = "" if v is None else str(v)
+    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", " ")
+    for ch in "\\`*_[]()#!|~":
+        s = s.replace(ch, "\\" + ch)
+    return s
+
+
+def _fence(snippet: str) -> str:
+    """A code fence longer than any backtick run in the snippet, so the snippet cannot close it."""
+    import re
+    longest = max((len(m) for m in re.findall(r"`+", snippet)), default=0)
+    return "`" * max(3, longest + 1)
 
 
 def _code(v: Any) -> str:
@@ -170,9 +187,10 @@ def render_markdown(a: Assessment) -> str:
             L += ["**Evidence.**", ""]
             for ev in f.evidence:
                 loc = f"{ev.file}:{ev.line}" if ev.file else "(no file)"
-                L.append(f"- `{ev.type.value}` {loc}" + (f" — {ev.note}" if ev.note else ""))
+                L.append(f"- `{ev.type.value}` {_inline(loc)}" + (f" — {_inline(ev.note)}" if ev.note else ""))
                 if ev.snippet:
-                    L += ["", "  ```", "  " + ev.snippet.replace("\n", "\n  "), "  ```"]
+                    fence = _fence(ev.snippet)
+                    L += ["", "  " + fence, "  " + ev.snippet.replace("\n", "\n  "), "  " + fence]
             L += ["", "**Exploitation preconditions.**", ""] + [f"- {p}" for p in f.attack_preconditions]
             L += ["", f"**Impact.** {f.impact}", "", f"**Remediation.** {f.remediation}", ""]
             L += ["**Verification after fix.**", ""] + [f"- {v}" for v in f.verification_steps]
