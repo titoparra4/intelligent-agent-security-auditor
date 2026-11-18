@@ -4,7 +4,7 @@ description: Audits the security of AI agents before deployment and after every 
 license: MIT
 compatibility: Requires Python 3.11+ and PyYAML. Works offline; static analysis needs only file read access. Controlled dynamic tests additionally require an isolated, network-less sandbox (e.g. docker --network none).
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   repository: "https://github.com/titoparra4/intelligent-agent-security-auditor"
   standards: "OWASP Agentic Top 10 2026; OWASP LLM Top 10 2026; NIST AI RMF 1.0; NIST AI 600-1; MCP security best practices"
 ---

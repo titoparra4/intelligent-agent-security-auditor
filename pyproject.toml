@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "intelligent-agent-security-auditor"
-version = "1.0.0"
+version = "1.1.0"
 description = "Evidence-based, offline-first security auditor for AI agents: architecture, tools, permissions, MCP, memory, autonomy, multi-agent and exfiltration risks."
 readme = "README.md"
 license = { text = "MIT" }
