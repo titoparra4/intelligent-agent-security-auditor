@@ -42,7 +42,7 @@ OSV advisories, opt-in), `--plugins`, `--allow-risks`, `-q`.
 ## CI example (GitHub Actions)
 
 ```yaml
-- run: pip install "git+https://github.com/titoparra4/intelligent-agent-security-auditor@v1.0.0"   # pin a tag or commit
+- run: pip install "git+https://github.com/titoparra4/intelligent-agent-security-auditor@v1.1.0"   # pin a tag or commit
 - run: agent-security-auditor audit ./agent --policy ./security-policy.yaml --format sarif,json -o reports
 - uses: github/codeql-action/upload-sarif@v3
   if: always()

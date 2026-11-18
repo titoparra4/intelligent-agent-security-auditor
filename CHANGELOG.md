@@ -3,7 +3,7 @@
 All notable changes are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/).
 
-## [Unreleased]
+## [1.1.0] - 2026-11-18
 
 ### Changed
 - **Breaking (manual install):** the skill moved to `skills/intelligent-agent-security-auditor/` (SKILL.md, references, scripts,
