@@ -9,7 +9,8 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+SKILL = ROOT / "skills/intelligent-agent-security-auditor"
+sys.path.insert(0, str(SKILL / "src"))
 
 from agent_security_auditor.core.engine import run_audit  # noqa: E402
 from agent_security_auditor.models.assessment import Mode  # noqa: E402

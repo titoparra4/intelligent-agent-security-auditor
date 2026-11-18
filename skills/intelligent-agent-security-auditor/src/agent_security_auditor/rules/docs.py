@@ -1,4 +1,4 @@
-"""Render docs/detection-rules.md from the rule catalog (single source of truth)."""
+"""Render references/detection-rules.md from the rule catalog (single source of truth)."""
 
 from __future__ import annotations
 
@@ -36,6 +36,6 @@ def render_rules_markdown() -> str:
     return "\n".join(lines)
 
 
-def write(path: str = "docs/detection-rules.md") -> None:
+def write(path: str = "skills/intelligent-agent-security-auditor/references/detection-rules.md") -> None:
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(render_rules_markdown())

@@ -11,5 +11,5 @@ changes the findings without the samples being refreshed.
 | `secure-agent-enterprise-policy.md` | same with `--policy examples/policies/enterprise-secure-agent.yaml --assessment-id ASSESSMENT-SECURE-ENTERPRISE --basename secure-agent-enterprise-policy` (READY_WITH_RISKS) |
 | `compare-secure-vs-lab.json` | `agent-security-auditor compare examples/sample-reports/secure-agent.json examples/sample-reports/vulnerable-agent-lab.json --format json` |
 
-Regenerate all with `python scripts/generate_report.py ...` or the commands above. Timestamps differ
+Regenerate all with `python skills/intelligent-agent-security-auditor/scripts/generate_report.py ...` or the commands above. Timestamps differ
 between runs; finding ids, evidence and verdicts are deterministic.

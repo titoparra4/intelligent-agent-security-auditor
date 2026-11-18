@@ -56,9 +56,14 @@ discovery → safe parsing → framework adapters → normalized inventory (with
 ```
 
 Details, directory purposes and extension points: [docs/architecture.md](docs/architecture.md).
+
+**Repository layout.** The skill itself lives in [`skills/intelligent-agent-security-auditor/`](skills/intelligent-agent-security-auditor/) — `SKILL.md`, `references/`,
+`scripts/`, `assets/` and the auditor package `src/`, i.e. only what the agent loads or runs.
+Installation docs, CI, tests and the deliberately vulnerable `examples/` stay at the repository root,
+outside the skill folder.
 Supported frameworks (partial static detection): OpenAI Agents SDK, LangChain, LangGraph, CrewAI,
 AutoGen, custom Python; JS/TS (regex); MCP configs and servers; `agent-manifest.yaml` for anything
-dynamic. See [docs/limitations.md](docs/limitations.md).
+dynamic. See [limitations](skills/intelligent-agent-security-auditor/references/limitations.md).
 
 ## Requirements
 
@@ -83,6 +88,13 @@ agent-security-auditor version
 npx skills add titoparra4/intelligent-agent-security-auditor
 ```
 
+**As an Agent Skill, manually** — copy only the skill folder:
+
+```bash
+git clone --depth 1 https://github.com/titoparra4/intelligent-agent-security-auditor.git /tmp/iasa
+cp -R /tmp/iasa/skills/intelligent-agent-security-auditor ~/.claude/skills/
+```
+
 Installation behavior depends on your skills CLI version and host (Claude Code, Codex and other
 Agent Skills hosts). Manual installation and hosts without skill directories are covered in
 [docs/installation.md](docs/installation.md), including what has actually been verified.
@@ -90,13 +102,13 @@ Agent Skills hosts). Manual installation and hosts without skill directories are
 ## Configuration
 
 - **Policy** — builtin profiles `basic-agent` (default), `enterprise-agent`, `mcp-integrated-agent`,
-  `high-risk-autonomous-agent`, or a YAML file ([schema](assets/schemas/policy.schema.json),
+  `high-risk-autonomous-agent`, or a YAML file ([schema](skills/intelligent-agent-security-auditor/assets/schemas/policy.schema.json),
   [examples](examples/policies/)): authorized/forbidden tools, forbidden operations, denied scopes,
   allowed destinations, restricted data, approval rules, isolation requirements, blocking
   severities, mandatory controls, exceptions with owner and expiry, scoring weights.
 - **Agent manifest** — `agent-manifest.yaml` in the target declares what static analysis cannot
   infer (identities, scopes, approvals, memory scope, allowlists, delegations, MCP pins)
-  ([schema](assets/schemas/agent-manifest.schema.json), [example](examples/secure-agent/agent-manifest.yaml)).
+  ([schema](skills/intelligent-agent-security-auditor/assets/schemas/agent-manifest.schema.json), [example](examples/secure-agent/agent-manifest.yaml)).
 
 ## Usage
 
@@ -119,7 +131,7 @@ INSUFFICIENT_EVIDENCE · `64` usage · `65` bad input · `70` scanner error (nev
 dynamic preconditions unmet (nothing executed) · `78` invalid policy. Full reference:
 [docs/usage.md](docs/usage.md).
 
-As a skill, the assistant follows [SKILL.md](SKILL.md): runs the tool, triages findings against
+As a skill, the assistant follows [SKILL.md](skills/intelligent-agent-security-auditor/SKILL.md): runs the tool, triages findings against
 the cited code, adds clearly-labelled analyst judgment and answers with the output contract.
 
 ## Examples
@@ -175,15 +187,15 @@ Full samples: [examples/sample-reports/](examples/sample-reports/).
 | ASI10 Rogue Agents | EXF-002/003/004, AUTO-005 | — |
 
 Also mapped: OWASP Top 10 for LLM Applications 2026, NIST AI RMF 1.0 and AI 600-1, MCP security
-best practices, MITRE ATLAS and CWE — see [references/](references/) and the generated
-[rule catalog](docs/detection-rules.md).
+best practices, MITRE ATLAS and CWE — see [references/](skills/intelligent-agent-security-auditor/references/) and the generated
+[rule catalog](skills/intelligent-agent-security-auditor/references/detection-rules.md).
 
 ## Limitations
 
 Static analysis shows exposure and configuration facts, not exploitation; framework detection is
 partial; runtime-built destinations and tools need the manifest; remote MCP tool lists are not
 fetched; vulnerability matching is offline and opt-in; dynamic results are as faithful as the
-harness. Read [docs/limitations.md](docs/limitations.md) before relying on a verdict.
+harness. Read [limitations](skills/intelligent-agent-security-auditor/references/limitations.md) before relying on a verdict.
 
 ## Security policy
 

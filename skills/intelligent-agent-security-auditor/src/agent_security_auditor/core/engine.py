@@ -27,7 +27,7 @@ THREAT_MODEL_MODULES = ("M01", "M11")
 BASE_LIMITATIONS = [
     "Static analysis reads files only; it never imports, installs or executes the audited agent.",
     "Absence of findings is not evidence of security; see Controls Not Verified and coverage.",
-    "Framework detection is partial (see docs/limitations.md); undeclared dynamic constructs may be missed.",
+    "Framework detection is partial (see references/limitations.md); undeclared dynamic constructs may be missed.",
 ]
 
 

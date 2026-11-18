@@ -16,7 +16,7 @@ if sys.version_info < (3, 11):
 try:
     import yaml  # noqa: F401
 except ImportError:
-    sys.exit("PyYAML is required: python3 -m pip install PyYAML  (or: pip install -e . in the skill directory)")
+    sys.exit("PyYAML is required: python3 -m pip install PyYAML")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
