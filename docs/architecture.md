@@ -34,19 +34,19 @@ target (untrusted files)
 
 | Path | Purpose |
 |---|---|
-| `src/agent_security_auditor/core` | engine, discovery, parsing, redaction, classification, schema validator, scoring, readiness, compare |
-| `src/agent_security_auditor/adapters` | framework/config adapters → normalized inventory |
-| `src/agent_security_auditor/analyzers` | modules M01–M11 (one file each) |
-| `src/agent_security_auditor/rules` | rule catalog, reference identifiers, 15-dimension matrix |
-| `src/agent_security_auditor/models` | finding / control / inventory / assessment data model |
-| `src/agent_security_auditor/policies` | policy loader + builtin profiles |
-| `src/agent_security_auditor/reporters` | M12 report formats |
-| `src/agent_security_auditor/sandbox` | MODE C: isolation verification, runner, child guard, simulated toolkit, scenarios |
-| `src/agent_security_auditor/schemas` | bundled copies of `assets/schemas` (kept identical by a test) |
-| `assets/templates` | report templates for manual / agent-written reports |
-| `assets/schemas` | JSON Schemas: finding, assessment, policy, agent-manifest |
-| `scripts/` | no-install entry points used by the skill |
-| `references/` | standards mappings and deep guidance (progressive disclosure from SKILL.md) |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/core` | engine, discovery, parsing, redaction, classification, schema validator, scoring, readiness, compare |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/adapters` | framework/config adapters → normalized inventory |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/analyzers` | modules M01–M11 (one file each) |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/rules` | rule catalog, reference identifiers, 15-dimension matrix |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/models` | finding / control / inventory / assessment data model |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/policies` | policy loader + builtin profiles |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/reporters` | M12 report formats |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/sandbox` | MODE C: isolation verification, runner, child guard, simulated toolkit, scenarios |
+| `skills/intelligent-agent-security-auditor/src/agent_security_auditor/schemas` | bundled copies of `assets/schemas` (kept identical by a test) |
+| `skills/intelligent-agent-security-auditor/assets/templates` | report templates for manual / agent-written reports |
+| `skills/intelligent-agent-security-auditor/assets/schemas` | JSON Schemas: finding, assessment, policy, agent-manifest |
+| `skills/intelligent-agent-security-auditor/scripts/` | no-install entry points used by the skill |
+| `skills/intelligent-agent-security-auditor/references/` | standards mappings and deep guidance (progressive disclosure from SKILL.md) |
 | `examples/` | vulnerable lab, secure reference, MCP, multi-agent, policies, sample reports |
 | `tests/` | unit, integration, security tests and fixtures |
 
@@ -58,7 +58,7 @@ target (untrusted files)
 - **Adapters**: implement `Adapter` (`name`, `coverage`, `applies`, `populate`) and add to
   `adapters.default_adapters()`; declare coverage honestly — it is printed in every report.
 - **Rules**: add to `rules/catalog.py` (title, dimension, severity, references, remediation,
-  verification); regenerate `docs/detection-rules.md`.
+  verification); regenerate `skills/intelligent-agent-security-auditor/references/detection-rules.md`.
 
 ## Finding identity
 

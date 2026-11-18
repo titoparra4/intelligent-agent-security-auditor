@@ -13,7 +13,7 @@ to the finance agent as unauthenticated and inheriting permissions.
 | MA-003 | `research-agent ⇄ writer-agent` cycle without limits |
 
 `research_agent.handoffs = [...]` is a runtime assignment the static adapter does not resolve —
-which is why the manifest declares that edge (see docs/limitations.md).
+which is why the manifest declares that edge (see skills/intelligent-agent-security-auditor/references/limitations.md).
 
 ```bash
 agent-security-auditor architecture examples/multi-agent --format json   # delegation graph

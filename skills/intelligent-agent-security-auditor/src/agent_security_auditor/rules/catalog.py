@@ -3,7 +3,7 @@
 Each rule documents its default severity, the dimension it belongs to, references, the
 remediation and the verification steps used for a retest. Analyzers decide status /
 confidence per occurrence (a rule may emit CONFIRMED for config facts and POTENTIAL for
-heuristics). ``docs/detection-rules.md`` is generated from this catalog.
+heuristics). ``references/detection-rules.md`` is generated from this catalog.
 """
 
 from __future__ import annotations

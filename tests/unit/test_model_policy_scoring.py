@@ -25,7 +25,7 @@ from agent_security_auditor.models.finding import (
 )
 from agent_security_auditor.policies import BUILTIN_PROFILES, PolicyError, load_policy
 from agent_security_auditor.rules import make_finding
-from conftest import EXAMPLES, ROOT
+from conftest import EXAMPLES, SKILL
 
 
 def _f(rule="PERM-001", sev=Severity.HIGH, status=FindingStatus.CONFIRMED, conf=Confidence.HIGH, asset="tool:x"):
@@ -93,7 +93,7 @@ def test_host_classification_and_allowlist():
 def test_builtin_profiles_valid_and_mirrored_in_examples(name):
     p = load_policy(name)
     assert p.mandatory_controls
-    builtin = (ROOT / "src" / "agent_security_auditor" / "policies" / "profiles" / f"{name}.yaml").read_text()
+    builtin = (SKILL / "src" / "agent_security_auditor" / "policies" / "profiles" / f"{name}.yaml").read_text()
     assert (EXAMPLES / "policies" / f"{name}.yaml").read_text() == builtin
 
 
@@ -106,8 +106,8 @@ def test_invalid_policy_is_rejected_with_errors():
 
 def test_bundled_schemas_match_assets():
     for name in ("finding", "assessment", "policy", "agent-manifest"):
-        a = (ROOT / "assets" / "schemas" / f"{name}.schema.json").read_text()
-        b = (ROOT / "src" / "agent_security_auditor" / "schemas" / f"{name}.schema.json").read_text()
+        a = (SKILL / "assets" / "schemas" / f"{name}.schema.json").read_text()
+        b = (SKILL / "src" / "agent_security_auditor" / "schemas" / f"{name}.schema.json").read_text()
         assert a == b, name
 
 

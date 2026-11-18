@@ -22,12 +22,12 @@ python -m pytest -q
 4. **References**: use official identifiers only (OWASP ASI/LLM 2026, NIST AI RMF subcategories,
    CWE, ATLAS IDs). Do not invent normative requirements.
 5. **Every rule needs**: a catalog entry (`rules/catalog.py`), a positive and a negative test, and
-   a regenerated `docs/detection-rules.md`.
+   a regenerated `skills/intelligent-agent-security-auditor/references/detection-rules.md`.
 6. **Stable finding ids**: do not include line numbers or other volatile data in discriminators.
 
 ## Adding a rule
 
-1. Add the `Rule` to `src/agent_security_auditor/rules/catalog.py`.
+1. Add the `Rule` to `skills/intelligent-agent-security-auditor/src/agent_security_auditor/rules/catalog.py`.
 2. Emit it from the relevant analyzer with `make_finding(...)` and redacted `Evidence`.
 3. Map it to a control (or create one) so readiness can use it.
 4. Add tests (vulnerable fixture fires, secure/benign fixture does not).
@@ -36,7 +36,7 @@ python -m pytest -q
 ## Adding a framework adapter
 
 Implement the `Adapter` protocol (`adapters/base.py`), add it to `default_adapters()`, write a
-fixture under `tests/fixtures/frameworks/` and document coverage in `docs/limitations.md`.
+fixture under `tests/fixtures/frameworks/` and document coverage in `skills/intelligent-agent-security-auditor/references/limitations.md`.
 
 ## Pull requests
 

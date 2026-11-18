@@ -36,7 +36,7 @@ Homepage = "https://github.com/titoparra4/intelligent-agent-security-auditor"
 Issues = "https://github.com/titoparra4/intelligent-agent-security-auditor/issues"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["skills/intelligent-agent-security-auditor/src"]
 
 [tool.setuptools.package-data]
 agent_security_auditor = ["policies/profiles/*.yaml", "schemas/*.json"]
@@ -44,4 +44,4 @@ agent_security_auditor = ["policies/profiles/*.yaml", "schemas/*.json"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-p no:cacheprovider"
-pythonpath = ["src"]
+pythonpath = ["skills/intelligent-agent-security-auditor/src"]

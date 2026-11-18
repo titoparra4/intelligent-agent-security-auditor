@@ -10,17 +10,20 @@ Requirements: Python **3.11+**, PyYAML. No other runtime dependency, no network 
 npx skills add titoparra4/intelligent-agent-security-auditor
 ```
 
-The `skills` CLI copies the skill directory (with `SKILL.md`) into the skills folder of the
+The `skills` CLI copies the skill directory (`skills/intelligent-agent-security-auditor/`, with `SKILL.md`) into the skills folder of the
 detected agent(s). Supported hosts and target folders depend on the CLI version — check
 `npx skills --help`. The skill's scripts still need Python 3.11+ on the machine.
 
 ### Manual (any host that reads `SKILL.md` directories)
 
 ```bash
-git clone https://github.com/titoparra4/intelligent-agent-security-auditor.git \
-  ~/.claude/skills/intelligent-agent-security-auditor          # Claude Code (user scope)
-# project scope: <repo>/.claude/skills/intelligent-agent-security-auditor
+git clone --depth 1 https://github.com/titoparra4/intelligent-agent-security-auditor.git /tmp/iasa
+cp -R /tmp/iasa/skills/intelligent-agent-security-auditor ~/.claude/skills/          # Claude Code (user scope)
+# project scope: cp -R /tmp/iasa/skills/intelligent-agent-security-auditor <repo>/.claude/skills/
 ```
+
+Copy only the skill folder: the repository root also holds tests, CI and deliberately vulnerable
+example agents that are not part of the skill.
 
 For other hosts, place the directory where that host loads skills (e.g. Codex: `~/.codex/skills/`
 — verify with your Codex version's documentation). The directory name must equal the skill
@@ -29,7 +32,7 @@ For other hosts, place the directory where that host loads skills (e.g. Codex: `
 ### Hosts without filesystem skills
 
 Chat interfaces that do not load skill directories (or that only accept uploaded skill archives)
-can use the skill by uploading a zip of this directory where supported, or by pasting `SKILL.md`
+can use the skill by uploading a zip of `skills/intelligent-agent-security-auditor/` where supported, or by pasting `SKILL.md`
 plus the relevant `references/*.md` as context; in that case the bundled tool cannot run and the
 assistant must state that the assessment was performed manually.
 
@@ -43,7 +46,7 @@ pip install -e .            # or: pip install -e '.[dev]' to run the tests
 agent-security-auditor version
 ```
 
-Without installing: `python3 scripts/generate_report.py <target>` (needs PyYAML).
+Without installing: `python3 skills/intelligent-agent-security-auditor/scripts/generate_report.py <target>` (needs PyYAML).
 
 ## Verified integrations (this release)
 

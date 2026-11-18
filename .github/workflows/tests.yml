@@ -30,9 +30,7 @@ jobs:
         if: matrix.python-version == '3.12'
         run: |
           python -m pip install skills-ref
-          mkdir -p /tmp/skill && git ls-files | tar -cf - -T - | tar -xf - -C /tmp/skill
-          mv /tmp/skill /tmp/intelligent-agent-security-auditor
-          agentskills validate /tmp/intelligent-agent-security-auditor
+          agentskills validate skills/intelligent-agent-security-auditor
       - name: CLI smoke test (static audit of the lab must be NOT_READY = exit 20)
         run: |
           set +e
