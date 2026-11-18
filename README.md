@@ -72,11 +72,17 @@ audits. Controlled dynamic tests additionally need a network-less sandbox (e.g. 
 
 ## Installation
 
+> **Verify the release.** Tag `v1.1.0` must resolve to commit
+> `d02fad2ad6572f1481090c7b535bf7ec7d8182ae` (also listed on the
+> [v1.1.0 release page](https://github.com/titoparra4/intelligent-agent-security-auditor/releases/tag/v1.1.0)).
+> Check the clone with `git rev-parse 'v1.1.0^{commit}'` before installing; if the hashes differ, do not install.
+
 **From GitHub**
 
 ```bash
-git clone https://github.com/titoparra4/intelligent-agent-security-auditor.git
+git clone --branch v1.1.0 https://github.com/titoparra4/intelligent-agent-security-auditor.git
 cd intelligent-agent-security-auditor
+git rev-parse 'v1.1.0^{commit}'   # must print d02fad2ad6572f1481090c7b535bf7ec7d8182ae
 python3.11 -m venv .venv && . .venv/bin/activate
 pip install -e .
 agent-security-auditor version
@@ -91,7 +97,8 @@ npx skills add titoparra4/intelligent-agent-security-auditor
 **As an Agent Skill, manually** — copy only the skill folder:
 
 ```bash
-git clone --depth 1 https://github.com/titoparra4/intelligent-agent-security-auditor.git /tmp/iasa
+git clone --depth 1 --branch v1.1.0 https://github.com/titoparra4/intelligent-agent-security-auditor.git /tmp/iasa
+git -C /tmp/iasa rev-parse 'v1.1.0^{commit}'   # must print d02fad2ad6572f1481090c7b535bf7ec7d8182ae
 cp -R /tmp/iasa/skills/intelligent-agent-security-auditor ~/.claude/skills/
 ```
 
